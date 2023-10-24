@@ -1,16 +1,20 @@
 def intersect(a, b):
     """Intersectia dintre a si b"""
-    return list(set(a) & set(b))
+    return [elem for elem in a if elem in b]
 
 
 def union(a, b):
     """Reuniunea dintre a si b"""
-    return list(set(a) | set(b))
+    result = a.copy()
+    for elem in b:
+        if elem not in result:
+            result.append(elem)
+    return result
 
 
 def difference(a, b):
     """Diferenta dintre a si b"""
-    return list(set(a) - set(b))
+    return [elem for elem in a if elem not in b]
 
 
 if __name__ == '__main__':
