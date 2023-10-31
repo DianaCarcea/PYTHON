@@ -22,13 +22,105 @@ def count_chars(string):
 
 
 #Ex3
+def compare_lists(l1,l2):
+    if not isinstance(l1, list) or not isinstance(l2, list):
+        raise ValueError("Instantele nu sunt liste!")
+
+    if len(l1) != len(l2):
+        return False
+
+    for val1, val2 in zip(l1, l2):
+        if val1 != val2:
+            return False
+
+        if isinstance(val1, tuple) and isinstance(val2, tuple):
+            if compare_tuples(val1, val2) is False:
+                return False
+
+        if isinstance(val1, list) and isinstance(val2, list):
+            if compare_lists(val1, val2) is False:
+                return False
+
+        if isinstance(val1, set) and isinstance(val2, set):
+            if compare_sets(val1, val2) is False:
+                return False
+
+        if isinstance(val1, dict) and isinstance(val2, dict):
+            if compare_dictionaries(val1, val2) is False:
+                return False
+
+    return True
+
+
+def compare_sets(s1, s2):
+    if not isinstance(s1, set) or not isinstance(s2, set):
+        raise ValueError("Instantele nu sunt seturi!")
+
+    if len(s1) != len(s2):
+        return False
+
+    for val1, val2 in zip(s1, s2):
+        if val1 != val2:
+            return False
+
+        if isinstance(val1, tuple) and isinstance(val2, tuple):
+            if compare_tuples(val1, val2) is False:
+                return False
+
+        if isinstance(val1, list) and isinstance(val2, list):
+            if compare_lists(val1, val2) is False:
+                return False
+
+        if isinstance(val1, set) and isinstance(val2, set):
+            if compare_sets(val1, val2) is False:
+                return False
+
+        if isinstance(val1, dict) and isinstance(val2, dict):
+            if compare_dictionaries(val1, val2) is False:
+                return False
+
+    return True
+
+
+def compare_tuples(t1, t2):
+    if not isinstance(t1, set) or not isinstance(t2, set):
+        raise ValueError("Instantele nu sunt tuple!")
+
+    if len(t1) != len(t2):
+        return False
+
+    for val1, val2 in zip(t1, t2):
+        if val1 != val2:
+            return False
+
+        if isinstance(val1, tuple) and isinstance(val2, tuple):
+            if compare_tuples(val1, val2) is False:
+                return False
+
+        if isinstance(val1, list) and isinstance(val2, list):
+            if compare_lists(val1, val2) is False:
+                return False
+
+        if isinstance(val1, set) and isinstance(val2, set):
+            if compare_sets(val1, val2) is False:
+                return False
+
+        if isinstance(val1, dict) and isinstance(val2, dict):
+            if compare_dictionaries(val1, val2) is False:
+                return False
+
+    return True
+
+
 def compare_dictionaries(d1, d2):
     if not isinstance(d1, dict) or not isinstance(d2, dict):
-        print("Instantele nu sunt dictionare!", file=sys.stderr)
-        return False
+        raise ValueError("Instantele nu sunt dictionare!")
 
     if len(d1) != len(d2):
         return False
+
+    d1 = dict(sorted(d1.items()))
+    d2 = dict(sorted(d2.items()))
 
     for key1, val1 in d1.items():
         if key1 not in d2:
@@ -40,6 +132,18 @@ def compare_dictionaries(d1, d2):
 
         if isinstance(val1, dict):
             if not compare_dictionaries(val1, val2):
+                return False
+
+        if isinstance(val1, list):
+            if not compare_lists(val1, val2):
+                return False
+
+        if isinstance(val1, set):
+            if not compare_lists(val1, val2):
+                return False
+
+        if isinstance(val1, tuple):
+            if not compare_tuples(val1, val2):
                 return False
 
     return True
@@ -71,16 +175,23 @@ def validate_dict(rules, d):
 
         val = d[key_rule]
 
+        # Valoarea nu incepe cu prefix
+        if not val.startswith(prefix):
+            return False
+
+        # Tai prefixul
+        val_fara_pref = val[len(prefix):]
+
+        # Valoarea nu are sufix
+        if not val_fara_pref.endswith(suffix):
+            return False
+
         # Middle gol -> verific prefix si suffix
         if middle == "":
             if val.startswith(prefix) and val.endswith(suffix):
                 continue
             else:
                 return False
-
-        # Valoarea incepe cu prefix si se termina cu suffix
-        if not val.startswith(prefix) or not val.endswith(suffix):
-            return False
 
         # Prefix gol, verific daca val nu incepe cu middle
         if not prefix and val.startswith(middle):
