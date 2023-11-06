@@ -1,3 +1,5 @@
+import copy
+
 # Ex1 - simulates a Stack
 class Stack:
     def __init__(self):
@@ -5,7 +7,8 @@ class Stack:
         self._vf = 0
 
     def push(self, elem):
-        self._elems.append(elem)
+        copy_elem = copy.deepcopy(elem)
+        self._elems.append(copy_elem)
         self._vf += 1
 
     def pop(self):
@@ -33,12 +36,6 @@ class Stack:
         self._elems = []
         self._vf = 0
 
-    def __getitem__(self, index):
-        if 0 <= index < len(self._elems):
-            return self._elems[index]
-        else:
-            raise IndexError("Index in afara intervalului!")
-
     def __str__(self):
         return f"MyStack: {self._elems}"
 
@@ -54,7 +51,8 @@ class Queue:
         self._rear = 0
 
     def push(self, elem):
-        self._elems.append(elem)
+        copy_elem = copy.deepcopy(elem)
+        self._elems.append(copy_elem)
         self._rear += 1
 
     def pop(self):
@@ -87,12 +85,6 @@ class Queue:
         self._elems = []
         self._front = 0
         self._rear = 0
-
-    def __getitem__(self, index):
-        if 0 <= index < self.size():
-            return self._elems[self._front + index]
-        else:
-            raise IndexError("Index in afara intervalului!")
 
     def __str__(self):
         return f"MyQueue: {self._elems[self._front:self._rear]}"
@@ -193,8 +185,13 @@ if __name__ == '__main__':
     print("Pop:", stack.pop())
     print(stack)
 
-    for index in range(stack.size()):
-        print(f"Elementul {index}:", stack[index])
+    stack1 = Stack()
+    a = [1, 2, 3]
+    stack1.push(a)
+    a += [4]
+    print(a)
+    print(stack1)
+
 
     #Ex2
     print("\n-------------Ex2--------------")
@@ -211,9 +208,6 @@ if __name__ == '__main__':
     print(queue)
     print("Pop:", queue.pop())
     print(queue)
-
-    for index in range(queue.size()):
-        print(f"Elementul {index}:", queue[index])
 
     #Ex3
     print("\n-------------Ex3--------------")
@@ -258,3 +252,6 @@ if __name__ == '__main__':
     print("Modification of elements:")
     matrix.op_transform(lambda e: e*5)
     print(matrix)
+
+
+
