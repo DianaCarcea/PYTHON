@@ -157,12 +157,15 @@ class Matrix:
         return result
 
     def op_transform(self, func_lambda):
+        ok_error = False
         for i in range(self._rows):
             for j in range(self._cols):
                 try:
                     self._elems[i][j] = func_lambda(self._elems[i][j])
                 except Exception as e:
-                    print(f"S-a întâlnit excepția: {e}")
+                    if not ok_error:
+                        print(f"S-a întâlnit excepția: {e}\n")
+                        ok_error = True
 
     def __str__(self):
         result = ""
@@ -248,6 +251,9 @@ if __name__ == '__main__':
     print("Adding the matrix to the matrix2:")
     result = matrix.addition(matrix2)
     print(result)
+
+    print("Modification of elements:")
+    matrix.op_transform(lambda e: e/0)
 
     print("Modification of elements:")
     matrix.op_transform(lambda e: e*5)
