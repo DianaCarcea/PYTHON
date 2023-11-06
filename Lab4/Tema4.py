@@ -156,10 +156,13 @@ class Matrix:
                 result._elems[i][j] = self._elems[i][j] + matrix2.get_elems(i, j)
         return result
 
-    def op_transform(self, func_lamda):
+    def op_transform(self, func_lambda):
         for i in range(self._rows):
             for j in range(self._cols):
-                self._elems[i][j] = func_lamda(self._elems[i][j])
+                try:
+                    self._elems[i][j] = func_lambda(self._elems[i][j])
+                except Exception as e:
+                    print(f"S-a întâlnit excepția: {e}")
 
     def __str__(self):
         result = ""
